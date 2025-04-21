@@ -48,7 +48,7 @@ export default function ExplorePage() {
   const { user } = useAuth();
   const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState<string>("");
+  const [categoryFilter, setCategoryFilter] = useState<string>("all");
   const [viewType, setViewType] = useState<"teaching" | "learning">("teaching");
   const [selectedSkill, setSelectedSkill] = useState<TeachingSkill | null>(null);
   const [selectedOwnSkill, setSelectedOwnSkill] = useState<number | null>(null);
@@ -85,14 +85,14 @@ export default function ExplorePage() {
         (searchTerm === "" || 
           skill.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
           skill.description.toLowerCase().includes(searchTerm.toLowerCase())) &&
-        (categoryFilter === "" || skill.categoryId.toString() === categoryFilter)
+        (categoryFilter === "all" || skill.categoryId.toString() === categoryFilter)
       )
     : learningSkills.filter(skill => 
         skill.userId !== user?.id && // Exclude current user's skills
         (searchTerm === "" || 
           skill.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
           skill.description.toLowerCase().includes(searchTerm.toLowerCase())) &&
-        (categoryFilter === "" || skill.categoryId.toString() === categoryFilter)
+        (categoryFilter === "all" || skill.categoryId.toString() === categoryFilter)
       );
 
   // Create exchange request
@@ -183,7 +183,7 @@ export default function ExplorePage() {
                       <SelectValue placeholder="Category" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Categories</SelectItem>
+                      <SelectItem value="all">All Categories</SelectItem>
                       {categories.map((category) => (
                         <SelectItem key={category.id} value={category.id.toString()}>
                           {category.name}
