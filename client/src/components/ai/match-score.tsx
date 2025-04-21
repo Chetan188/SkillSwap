@@ -99,7 +99,7 @@ export function MatchScore({
                 <p className="font-medium">{getScoreText(score)}</p>
                 <p className="text-lg font-semibold">{score}%</p>
               </div>
-              <Progress value={score} className="h-3" indicatorClassName={getScoreColor(score)} />
+              <Progress value={score} className={`h-3 ${getScoreColor(score)}`} />
             </div>
           )}
         </div>

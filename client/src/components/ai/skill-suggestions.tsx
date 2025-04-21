@@ -18,9 +18,16 @@ export function SkillSuggestions({ onSelectSkill }: SkillSuggestionsProps) {
   const [input, setInput] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
   
+  // Define trend data type
+  type TrendData = {
+    trending: string[];
+    emerging: string[];
+    inDemand: string[];
+  };
+  
   const { useSkillSuggestions, useSkillTrends } = useAIServices();
   const skillSuggestionsMutation = useSkillSuggestions();
-  const { data: trends, isLoading: isTrendsLoading } = useSkillTrends();
+  const { data: trends, isLoading: isTrendsLoading } = useSkillTrends<TrendData>();
   
   const handleGenerateSuggestions = async () => {
     if (!input.trim()) return;
@@ -190,7 +197,7 @@ export function SkillSuggestions({ onSelectSkill }: SkillSuggestionsProps) {
             <div>
               <h4 className="text-xs font-medium text-muted-foreground mb-2">Trending</h4>
               <div className="flex flex-wrap gap-2">
-                {trends?.trending?.map((skill, i) => (
+                {(trends?.trending || []).map((skill: string, i: number) => (
                   <Badge key={i} variant="secondary" className="cursor-pointer" onClick={() => handleSelectSkill(skill)}>
                     {skill}
                   </Badge>
@@ -201,7 +208,7 @@ export function SkillSuggestions({ onSelectSkill }: SkillSuggestionsProps) {
             <div>
               <h4 className="text-xs font-medium text-muted-foreground mb-2">Emerging</h4>
               <div className="flex flex-wrap gap-2">
-                {trends?.emerging?.map((skill, i) => (
+                {(trends?.emerging || []).map((skill: string, i: number) => (
                   <Badge key={i} variant="secondary" className="cursor-pointer" onClick={() => handleSelectSkill(skill)}>
                     {skill}
                   </Badge>
@@ -212,7 +219,7 @@ export function SkillSuggestions({ onSelectSkill }: SkillSuggestionsProps) {
             <div>
               <h4 className="text-xs font-medium text-muted-foreground mb-2">In Demand</h4>
               <div className="flex flex-wrap gap-2">
-                {trends?.inDemand?.map((skill, i) => (
+                {(trends?.inDemand || []).map((skill: string, i: number) => (
                   <Badge key={i} variant="secondary" className="cursor-pointer" onClick={() => handleSelectSkill(skill)}>
                     {skill}
                   </Badge>

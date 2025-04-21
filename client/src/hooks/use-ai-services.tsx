@@ -6,8 +6,8 @@ export function useAIServices() {
   const { toast } = useToast();
 
   // Get skill trends (trending, emerging, in-demand)
-  const useSkillTrends = () => {
-    return useQuery({
+  const useSkillTrends = <T = any>() => {
+    return useQuery<T>({
       queryKey: ["/api/ai/skill-trends"],
       staleTime: 1000 * 60 * 60, // Cache for 1 hour
     });
