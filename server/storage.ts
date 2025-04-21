@@ -5,6 +5,7 @@ import {
 } from "@shared/schema";
 import createMemoryStore from "memorystore";
 import session from "express-session";
+import { Store as SessionStore } from "express-session";
 
 const MemoryStore = createMemoryStore(session);
 
@@ -57,7 +58,7 @@ export interface IStorage {
   markMessageAsRead(id: number): Promise<Message | undefined>;
   
   // Session store
-  sessionStore: session.SessionStore;
+  sessionStore: SessionStore;
 }
 
 export class MemStorage implements IStorage {
@@ -75,7 +76,7 @@ export class MemStorage implements IStorage {
   private exchangeIdCounter: number;
   private messageIdCounter: number;
   
-  sessionStore: session.SessionStore;
+  sessionStore: SessionStore;
   
   constructor() {
     this.users = new Map();
@@ -325,4 +326,8 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+// Import the database storage implementation
+import { DatabaseStorage } from './database-storage';
+
+// Use the Database Storage implementation instead of MemStorage
+export const storage = new DatabaseStorage();
