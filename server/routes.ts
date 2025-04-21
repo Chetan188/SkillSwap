@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import { setupAuth } from "./auth";
 import { WebSocketServer } from "ws";
 import { insertTeachingSkillSchema, insertLearningSkillSchema, insertExchangeSchema, insertMessageSchema } from "@shared/schema";
+import aiRoutes from "./ai-routes";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Create HTTP server
