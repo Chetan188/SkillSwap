@@ -138,8 +138,9 @@ export default function MessagesPage() {
         }
         
         const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-        // Use port 5000 explicitly for WebSocket connection and specify the path to match server config
-        const wsUrl = `${protocol}://${window.location.hostname}:5000/ws`;
+        // Instead of connecting directly to port 5000, use the same hostname
+        // This avoids CORS issues and lets the dev server proxy WebSocket connections
+        const wsUrl = `${protocol}://${window.location.hostname}/ws`;
         console.log(`Connecting WebSocket to: ${wsUrl} (attempt #${reconnectAttempts + 1})`);
         
         // Close any existing connection

@@ -7,13 +7,14 @@ async function throwIfResNotOk(res: Response) {
   }
 }
 
-// Helper function to ensure URL uses port 5000
+// Helper function to build API URLs
 function getApiUrl(url: string): string {
   // If it's already an absolute URL, return it as is
   if (url.startsWith('http')) return url;
   
-  // Otherwise, ensure we're connecting to port 5000
-  return `${window.location.protocol}//${window.location.hostname}:5000${url}`;
+  // Instead of connecting directly to port 5000, use a relative URL  
+  // This avoids CORS issues as the Vite dev server will proxy requests
+  return url;
 }
 
 export async function apiRequest(
