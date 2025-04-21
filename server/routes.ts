@@ -754,5 +754,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
+  // Register AI routes
+  app.use(aiRoutes);
+  
   return httpServer;
 }

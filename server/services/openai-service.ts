@@ -18,7 +18,7 @@ export async function generateSkillSuggestions(
              The year is 2025. You help users identify and articulate skills they can ${type === "teaching" ? "teach to" : "learn from"} others.
              Based on the user's input, suggest 5 relevant and specific skills that would be valuable in 2025.
              Focus on both traditional skills and emerging skills that are becoming important due to technological and societal changes.
-             Respond with ONLY a JSON array of strings, each representing a skill.`
+             Respond with ONLY a JSON object containing an array named "skills" with 5 strings, each representing a skill.`
         },
         {
           role: "user",
@@ -28,7 +28,8 @@ export async function generateSkillSuggestions(
       response_format: { type: "json_object" }
     });
 
-    const suggestedSkills = JSON.parse(response.choices[0].message.content);
+    const content = response.choices[0].message.content || '{"skills":[]}';
+    const suggestedSkills = JSON.parse(content);
     return suggestedSkills.skills || [];
   } catch (error) {
     console.error("Error generating skill suggestions:", error);
@@ -61,7 +62,7 @@ export async function generateSkillDescription(
       ]
     });
 
-    return response.choices[0].message.content.trim();
+    return response.choices[0].message.content?.trim() || "";
   } catch (error) {
     console.error("Error generating skill description:", error);
     return "";
@@ -79,7 +80,7 @@ export async function suggestLocation(partialInput: string): Promise<string[]> {
             `You are a location suggestion service. 
              Given a partial input of a city or location name, return the top 5 likely completions.
              These should be real locations from around the world.
-             Respond with ONLY a JSON array of strings, each representing a location.`
+             Respond with ONLY a JSON object containing an array named "locations" with 5 strings, each representing a location.`
         },
         {
           role: "user",
@@ -89,7 +90,8 @@ export async function suggestLocation(partialInput: string): Promise<string[]> {
       response_format: { type: "json_object" }
     });
 
-    const suggestions = JSON.parse(response.choices[0].message.content);
+    const content = response.choices[0].message.content || '{"locations":[]}';
+    const suggestions = JSON.parse(content);
     return suggestions.locations || [];
   } catch (error) {
     console.error("Error suggesting locations:", error);
@@ -121,7 +123,8 @@ export async function analyzeSkillTrends(): Promise<{
       response_format: { type: "json_object" }
     });
 
-    const trends = JSON.parse(response.choices[0].message.content);
+    const content = response.choices[0].message.content || '{"trending":[],"emerging":[],"inDemand":[]}';
+    const trends = JSON.parse(content);
     return {
       trending: trends.trending || [],
       emerging: trends.emerging || [],
@@ -162,7 +165,8 @@ export async function generateMatchScore(
       response_format: { type: "json_object" }
     });
 
-    const result = JSON.parse(response.choices[0].message.content);
+    const content = response.choices[0].message.content || '{"score":50}';
+    const result = JSON.parse(content);
     return Math.min(100, Math.max(0, result.score || 50));
   } catch (error) {
     console.error("Error generating match score:", error);
